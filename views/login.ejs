@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/stylesheets/login.css">
+    <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+    rel="stylesheet"
+/>
+</head>
+<body>
+<div class="parent">
+
+  <div id="c1">
+ 
+  <h2>Sign in</h2>
+  <div class="icon">
+    <a href="/auth/google"><i class="ri-google-fill"></i></a>
+  <a href="">
+  <i class="ri-facebook-fill"></i>
+</a>
+</div>
+<p>or use your account</p>
+
+<form action="/login/save" method="post">
+
+<input type="text" id="name" name="username" placeholder="Username">
+
+<input type="password"  id="name" name="password" placeholder="Password">
+
+<button>Sign In</button>
+
+
+</form>
+
+
+
+
+  </div>
+
+
+
+
+
+
+  <div id="c2">
+    <center><h2>Hello, Friend!</h2>
+        <p>Join us and start your shopping adventure!</p>
+        <button><a href="/register"> Sign Up </a></button>
+    </center>
+   
+  </div>
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

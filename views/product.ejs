@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+    rel="stylesheet"
+/>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Products</h1>
+        <a class="btn btn-primary mb-4" href="/wishlist"><i class="ri-heart-line"></i></a>
+        <a class="btn btn-secondary mb-4" href="/cart">View Cart</a>
+        <a class="btn btn-primary mb-4" href="/product/create">Create</a>
+        <div class="row">
+            <% for(let p of product){ %>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <img src="<%= p.photo %>" class="card-img-top" alt="<%= p.title %>">
+                    <div class="card-body">
+                        <h5 class="card-title ">₹<%= p.price %></h5>
+                        <h5 class="card-title"><%= p.title %></h5>
+                        <p class="card-text"><%= p.description %></p>
+                        <a href="/product/<%= p._id %>" class="btn btn-success">Show</a>
+                        <form action="/wishlist/add/<%= p._id %>" method="post" style="display: inline;">
+                            <button type="submit" class="btn btn-primary">Add to Wishlist</button>
+                        </form>
+                        <form action="/cart/add/<%= p._id %>" method="post" class="mt-2">
+                            <input type="number" name="quantity" value="1" min="1" class="form-control mb-2">
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

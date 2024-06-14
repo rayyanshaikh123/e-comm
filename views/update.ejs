@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Update Product</h1>
+        <form action="http://localhost:3000/product/<%=product._id%>?_method=PATCH" method="post">
+            <div class="form-group">
+                <label for="tit">Enter the Category:</label>
+                <input type="text" id="tit" value="<%= product.category  %>" name="category" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="tit">Enter the Title:</label>
+                <input type="text" id="tit" name="title" value="<%= product.title  %>" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="desc">Enter the Description:</label>
+                <textarea name="description" id="desc" class="form-control"><%=  product.description %></textarea>
+            </div>
+            <div class="form-group">
+                <label for="pic">Enter the URL:</label>
+                <input type="text" id="pic" name="photo" value="<%= product.photo  %>" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="pic">Enter the Price:</label>
+                <input type="number" id="pic" name="price" value="<%= product.price  %>" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="pic">Enter the Quantity:</label>
+                <input type="number" id="pic" name="stockQuantity" value="<%= product.stockQuantity  %>" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

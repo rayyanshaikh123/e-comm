@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">My Orders</h1>
+        <% if (orders.length > 0) { %>
+            <% orders.forEach(order => { %>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Order ID: <%= order._id %> - Status: <%= order.status %>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Order Details</h5>
+                        <ul class="list-group">
+                            <% order.products.forEach(item => { %>
+                                <li class="list-group-item">
+                                    <strong>Product:</strong> <%= item.product.title %> - 
+                                    <strong>Quantity:</strong> <%= item.quantity %> - 
+                                    <strong>Price:</strong> ₹<%= item.product.price %>
+                                </li>
+                            <% }) %>
+                        </ul>
+                        <p class="mt-3"><strong>Total Price:</strong> ₹<%= order.products.reduce((acc, item) => acc + (item.product.price * item.quantity), 0) %></p>
+                        <p><strong>Payment ID:</strong> <%= order.payment.paymentId %></p>
+                        <p><strong>Order ID:</strong> <%= order.payment.orderId %></p>
+                        <p><strong>Created At:</strong> <%= order.createdAt.toLocaleString() %></p>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>No orders found.</p>
+        <% } %>
+    </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Shopping Cart</h1>
+        <% if (cart && cart.products.length > 0) { %>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% let totalPrice = 0; %>
+                    <% cart.products.forEach(p => { %>
+                        <tr>
+                            <td><%= p.product.title %></td>
+                            <td>
+                                <form action="/cart/update/<%= p.product._id %>" method="post">
+                                    <input type="number" name="quantity" value="<%= p.quantity %>" min="1" class="form-control" style="width: 80px;">
+                                    <button type="submit" class="btn btn-info mt-2">Update</button>
+                                </form>
+                            </td>
+                            <td>₹<%= p.product.price %></td>
+                            <td>₹<%= p.product.price * p.quantity %></td>
+                            <td>
+                                <form action="/cart/remove/<%= p.product._id %>" method="post">
+                                    <button type="submit" class="btn btn-danger">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <% totalPrice += p.product.price * p.quantity; %>
+                    <% }) %>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="3">Total</th>
+                        <th colspan="2">₹<%= totalPrice %></th>
+                    </tr>
+                </tfoot>
+            </table>
+            <form action="/payment/create-order" method="post" id="checkoutForm">
+                <button type="submit" class="btn btn-primary">Proceed to Checkout</button>
+            </form>
+        <% } else { %>
+            <p>No items in cart.</p>
+        <% } %>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+   
+    <script>
+        $('#checkoutForm').submit(function(e) {
+            e.preventDefault();
+            $.post('/payment/create-order', function(order) {
+                var options = {
+                    "key": "<%= process.env.RAZORPAY_KEY_ID %>", 
+                    "amount": order.amount, 
+                    "currency": "INR",
+                    "name": "Your Store Name",
+                    "description": "Test Transaction",
+                    "image": "/your_logo.png",
+                    "order_id": order.id, 
+                    "handler": function(response) {
+                        $.post('/payment/verify-payment', {
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_signature: response.razorpay_signature
+                        }, function(result) {
+                            if (result.status === 'success') {
+                                alert('Payment successful');
+                                window.location.href = '/checkout/success';
+                            } else {
+                                alert('Payment failed');
+                                window.location.href = '/checkout/cancel';
+                            }
+                        });
+                    },
+                    "prefill": {
+                        "name": "<%= user.username %>",
+                        "email": "<%= user.email %>",
+                        "contact": "9999999999"
+                    },
+                    "theme": {
+                        "color": "#3399cc"
+                    }
+                };
+                var rzp1 = new Razorpay(options);
+                rzp1.open();
+            });
+        });
+    </script>
+</body>
+</html>

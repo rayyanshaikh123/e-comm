@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= currentUser.username %> - Profile</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">MyApp</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <!-- Add other navigation items if necessary -->
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="<%=currentUser.photo ? currentUser.photo : "https://artscimedia.case.edu/wp-content/uploads/sites/79/2016/12/14205134/no-user-image.gif" %>" class="card-img-top" alt="<%= currentUser.username %>">
+                    <div class="card-body text-center">
+                        <h5 class="card-title"><%= currentUser.username %></h5>
+                        <p class="card-text"><%= currentUser.email %></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <h3>Profile Details</h3>
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Username:</strong> <%= currentUser.username %></li>
+                    <li class="list-group-item"><strong>Email:</strong> <%= currentUser.email %></li>
+                    <li class="list-group-item"><strong>Joined at:</strong> <%= currentUser.createdAt.toUTCString() %></li>
+                    <% if (currentUser.isVerified === true) { %>
+                        <li class="list-group-item"><strong>Connected using Google</strong></li>
+                   <% }%>
+                        <a class="btn btn-primary" href="/profile/<%=currentUser._id %>">My Orders</a>
+                        <a class="btn btn-primary" href="/profile/product/<%=currentUser._id %>">My Products</a>
+
+                
+                  
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

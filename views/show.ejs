@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Product Details</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Author: <%= product.author.username %></p>
+                <h3 class="card-title"><%= product.title %></h3>
+                <p class="card-text"><%= product.description %></p>
+                <p class="card-text"><%= product.category %></p>
+                <img class="card-img-top" src="<%= product.photo %>" alt="<%= product.title %>">
+                <h5 class="card-title">₹<%= product.price %></h5>   
+                <a href="/Product/<%=product._id%>/edit" class="btn btn-primary mr-2">Edit</a>
+                <form action="http://localhost:3000/product/<%=product._id%>?_method=DELETE" method="post" style="display: inline;">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
