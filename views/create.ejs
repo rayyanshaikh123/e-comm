@@ -3,48 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create a Post</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Create Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .form-section {
+            background-image: url('https://img.freepik.com/free-photo/paper-bags-different-colors-blue-background-top-view_169016-43755.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            width: 100%;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #myForm {
+            max-width: 600px;
+            width: 100%;
+            background-color: aliceblue;
+            border-radius: 20px;
+            box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+            margin-bottom: 20px;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #image {
+            height: 100px;
+            width: 100px;
+            margin-bottom: 10px;
+        }
+
+        label {
+            margin-bottom: 10px;
+        }
+
+        input[type="number"], input[type="text"], select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .button-85 {
+            padding: 12px 24px;
+            border: none;
+            outline: none;
+            color: white;
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: 18px;
+            margin-top: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .button-85:hover {
+            opacity: 0.8;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <center>
-                    <h1>Create a Post</h1>
-                </center>
-                <form action="/product/create" method="post">
-                    <div class="form-group">
-                        <label for="tit">Enter the Category:</label>
-                        <input type="text" id="tit" name="category" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="tit">Enter the Title:</label>
-                        <input type="text" id="tit" name="title" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="desc">Enter the Description:</label>
-                        <textarea name="description" id="desc" class="form-control"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="pic">Enter the URL:</label>
-                        <input type="text" id="pic" name="photo" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="pic">Enter the Price:</label>
-                        <input type="number" id="pic" name="price" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="pic">Enter the Quantity:</label>
-                        <input type="number" id="pic" name="stockQuantity" class="form-control">
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
-                </form>
-            </div>
-        </div>
+    <div class="form-section">
+        <form id="myForm">
+            <h1>Add a New Product</h1>
+
+            <label>Select Category</label>
+            <select id="cat" name="category">
+                <option value="">Select Any</option>
+                <!-- Categories will be populated dynamically -->
+            </select>
+
+            <label>Select Title</label>
+            <select id="title" name="title">
+                <option value="">Select Any</option>
+                <!-- Titles will be populated dynamically -->
+            </select>
+
+            <label>Description</label>
+            <p id="description"></p>
+
+            <label>Image URL</label>
+            <input type="text" id="image" name="image" placeholder="Enter image URL">
+
+            <label>Price</label>
+            <input type="number" id="price" name="price" placeholder="Enter price">
+
+            <label>Stock Quantity</label>
+            <input type="number" id="stock" name="stock" placeholder="Enter stock quantity">
+
+            <button type="button" class="button-85" id="bt">Add Product</button>
+        </form>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const usercat = document.getElementById('cat');
+            const usertitle = document.getElementById('title');
+            const description = document.getElementById('description');
+            const image = document.getElementById('image');
+            const priceInput = document.getElementById('price');
+            const stockInput = document.getElementById('stock');
+
+            async function fetchCategories() {
+                try {
+                    const response = await fetch('http://localhost:3000/master/products');
+                    const products = await response.json();
+                    const categories = [...new Set(products.map(product => product.category))];
+                    categories.forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category;
+                        option.textContent = category;
+                        usercat.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error('Error fetching categories:', error);
+                }
+            }
+
+            usercat.addEventListener('change', async () => {
+                const selectedCategory = usercat.value;
+                const response = await fetch('http://localhost:3000/master/products');
+                const products = await response.json();
+                const titles = products.filter(product => product.category === selectedCategory)
+                                      .flatMap(product => product.mod.map(mod => mod.title));
+
+                usertitle.innerHTML = '<option value="">Select Any</option>';
+                titles.forEach(title => {
+                    const option = document.createElement('option');
+                    option.value = title;
+                    option.textContent = title;
+                    usertitle.appendChild(option);
+                });
+            });
+
+            usertitle.addEventListener('change', () => {
+                const selectedCategory = usercat.value;
+                const selectedTitle = usertitle.value;
+                const selectedProduct = products.find(product => product.category === selectedCategory);
+                const selectedMod = selectedProduct.mod.find(mod => mod.title === selectedTitle);
+
+                if (selectedMod) {
+                    description.textContent = selectedMod.description;
+                    image.src = selectedMod.image;
+                } else {
+                    description.textContent = '';
+                    image.src = '';
+                }
+            });
+
+            document.getElementById('bt').addEventListener('click', async () => {
+                const selectcat = usercat.value;
+                const selectitle = usertitle.value;
+                const price = priceInput.value;
+                const stock = stockInput.value;
+                const des = description.textContent;
+                const imageUrl = image.src;
+
+                const productDetails = {
+                    category: selectcat,
+                    title: selectitle,
+                    description: des,
+                    image: imageUrl,
+                    price: price,
+                    stockQuantity: stock
+                };
+
+                try {
+                    const response = await fetch('http://localhost:3000/create', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(productDetails)
+                    });
+                    const data = await response.json();
+                    console.log(data);
+                    alert("Product added successfully!");
+                    document.getElementById('myForm').reset();
+                    description.textContent = '';
+                    image.src = '';
+                } catch (error) {
+                    console.error('Error adding product:', error);
+                    alert('Failed to add product!');
+                }
+            });
+
+            await fetchCategories();
+        });
+    </script>
 </body>
 </html>

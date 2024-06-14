@@ -14,7 +14,7 @@ const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 const {isLoggedIn} = require('./middleware/mid')
 require("dotenv").config();
 
-mongoose.connect('mongodb://localhost:27017/pass')
+mongoose.connect('mongodb+srv://chiteshvarunvarun:S3U9ETCmqjYgzMTA@cluster0.u441nrv.mongodb.net/pass')
 .then(()=>{
     console.log("MongoDB Connected!");
 })
