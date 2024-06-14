@@ -95,6 +95,8 @@ app.use('/wishlist', require('./routes/wishlist'));
 app.use('/cart', require('./routes/cart'));
 app.use('/payment', require('./routes/payment'));
 app.use('/checkout', require('./routes/checkout'));
+app.use('/master', require('./routes/master'));
+
 
 
 

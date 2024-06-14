@@ -19,6 +19,7 @@ router.get('/create', isLoggedIn, (req, res) => {
 
 router.post('/create', async (req, res) => {
     const { title, description, photo, category, price, stockQuantity } = req.body;
+    console.log(req.body);
     const userId = req.user._id;
     try {
         const newProduct = new Product({
@@ -77,34 +78,8 @@ router.get('/products', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-// New endpoint for adding products to masterdb
-router.post('/master/add', async (req, res) => {
-    const { category, title, description, image } = req.body;
 
-    try {
-        const newProduct = {
-            category,
-            mod: [{
-                title,
-                description,
-                image
-            }]
-        };
-
-        const savedProduct = await Master.create(newProduct);
-        res.json(savedProduct);
-    } catch (error) {
-        console.error('Error adding product to MasterDB:', error);
-        res.status(500).json({ error: 'Failed to add product to MasterDB' });
-    }
-});
-router.get('/master/products', async (req, res) => {
-    try {
-        const products = await Master.find({});
-        res.json(products);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
 
 module.exports = router;
+
+
